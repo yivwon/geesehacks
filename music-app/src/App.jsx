@@ -16,6 +16,15 @@ function App() {
         f: "F1",
         t: "F#1",
         g: "G1",
+        y: "G#1",
+        h: "A1",
+        u: "A#1",
+        j: "B1",
+        k: "C2",
+        o: "C#2",
+        l: "D2",
+        p: "D#2",
+        ";": "E2",
         // Add more mappings for other notes...
     };
 

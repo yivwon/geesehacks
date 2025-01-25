@@ -12,6 +12,11 @@ const Keyboard = ({ activeKeys }) => {
         { note: "A1", type: "white" },
         { note: "A#1", type: "black" },
         { note: "B1", type: "white" },
+        { note: "C2", type: "white" },
+        { note: "C#2", type: "black" },
+        { note: "D2", type: "white" },
+        { note: "D#2", type: "black" },
+        { note: "E2", type: "white" },
     ];
 
     return (

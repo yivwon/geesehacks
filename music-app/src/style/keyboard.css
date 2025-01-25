@@ -1,20 +1,27 @@
+
+@font-face {
+    font-family: 'Poppins-Medium.ttf';
+    src: url('./fonts/Poppins-Medium.ttf');
+  }
+
 body {
     display: flex;
     justify-content: center;
     align-items: center;
+    font-family: "Poppins-Medium.ttf";
 }
 .container {
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
-    border-radius: 20px;
 }
 
 .white-key,
 .black-key {
     position: relative;
     text-align: center;
-    font-size: 12px;
+    font-size: 14px;
+
     cursor: pointer;
     transition: background-color 0.2s ease;
 }
@@ -23,20 +30,27 @@ body {
     width: 60px;
     height: 200px;
     background-color: white;
-    border: 1px solid black;
+    border: 0.1px solid #7C7C7C;
+    border-radius: 0 0 8px 8px;
     z-index: 1;
 }
 
 .black-key {
     width: 40px;
     height: 120px;
-    background-color: black;
+    border-radius: 0 0 7px 7px;
+    background-color: #2F3043;
+    color: #767898;
     margin-left: -20px;
     margin-right: -20px;
     z-index: 2;
 }
 
 .active {
-    background-color: darkblue;
-    color: white;
+    background-color: #E5E5F3;
+    color: #81819D;
+}
+
+.active.black-key {
+    background-color: #040622
 }

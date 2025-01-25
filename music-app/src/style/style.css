@@ -1,5 +1,11 @@
+
+@font-face {
+    font-family: 'Poppins-Medium.ttf';
+    src: url('./fonts/Poppins-Medium.ttf');
+  }
+
 body {
-    font-family: Arial, sans-serif;
+    font-family: Poppins-Medium;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -30,7 +36,7 @@ body {
 }
 
 .key:last-child {
-    border-right: 2px solid #2F3043;
+    border-right: 2px solid #fff;
 }
 
 .key:active {
@@ -40,7 +46,7 @@ body {
 .black-key {
     width: 40px;
     height: 120px;
-    background-color: #000;
+    background-color: #fff;
     position: absolute;
     z-index: 2;
     margin-left: -20px;
@@ -49,7 +55,7 @@ body {
 }
 
 .black-key:active {
-    background-color: #2F3043;
+    background-color: #fff;
 }
 
 .key-container {

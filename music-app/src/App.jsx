@@ -1,30 +1,30 @@
 import { useState, useEffect } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
 import Keyboard from "./components/keyboard";
+import ABCJS from "abcjs";
 import "./style/keyboard.css";
 
 function App() {
     const [activeKeys, setActiveKeys] = useState([]);
+    const [abcNotation, setAbcNotation] = useState("");
 
     const keyMap = {
-        a: "C1", // Map 'a' to the 'C' note
-        w: "C#1", // Map 'w' to the 'C#' note
-        s: "D1", // Map 's' to the 'D' note
-        e: "D#1", // Map 'e' to the 'D#' note
-        d: "E1", // Map 'd' to the 'E' note
-        f: "F1",
-        t: "F#1",
-        g: "G1",
-        y: "G#1",
-        h: "A1",
-        u: "A#1",
-        j: "B1",
-        k: "C2",
-        o: "C#2",
-        l: "D2",
-        p: "D#2",
-        ";": "E2",
+        a: "C", // Middle C
+        w: "^C", // C#
+        s: "D", // D
+        e: "^D", // D#
+        d: "E", // E
+        f: "F", // F
+        t: "^F", // F#
+        g: "G", // G
+        y: "^G", // G#
+        h: "A", // A
+        u: "^A", // A#
+        j: "B", // B
+        k: "c", // High C
+        o: "^c", // High C#
+        l: "d", // High D
+        p: "^d", // High D#
+        ";": "e", // High E
         // Add more mappings for other notes...
     };
 
@@ -32,13 +32,20 @@ function App() {
         try {
             const audio = new Audio(`/sounds/${note}.mp3`);
             console.log(`Playing: ${note}.mp3`); // Debugging
-            audio.play().catch((error) => {
-                console.error(`Error playing sound for ${note}:`, error);
-            });
+            audio.play();
         } catch (error) {
             console.error(`Failed to load sound for ${note}:`, error);
         }
     };
+
+    const renderSheetMusic = () => {
+        const abcString = `X:1\nT:Live Sheet Music\nK:C\n${abcNotation}`;
+        ABCJS.renderAbc("sheet-music", abcString);
+    };
+
+    useEffect(() => {
+        renderSheetMusic();
+    }, [abcNotation]);
 
     useEffect(() => {
         const handleKeyDown = (event) => {
@@ -46,6 +53,7 @@ function App() {
             if (note && !activeKeys.includes(note)) {
                 setActiveKeys((prev) => [...prev, note]); // Add note to active keys
                 playSound(note);
+                setAbcNotation((prev) => `${prev} ${note}`);
             }
         };
 
@@ -67,6 +75,7 @@ function App() {
 
     return (
         <div>
+            <div id="sheet-music"></div>
             <Keyboard activeKeys={activeKeys} keyMap={keyMap} />
         </div>
     );

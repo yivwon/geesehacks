@@ -28,13 +28,25 @@ function App() {
         // Add more mappings for other notes...
     };
 
+    const playSound = (note) => {
+        try {
+            const audio = new Audio(`/sounds/${note}.mp3`);
+            console.log(`Playing: ${note}.mp3`); // Debugging
+            audio.play().catch((error) => {
+                console.error(`Error playing sound for ${note}:`, error);
+            });
+        } catch (error) {
+            console.error(`Failed to load sound for ${note}:`, error);
+        }
+    };
+
     useEffect(() => {
         const handleKeyDown = (event) => {
             const note = keyMap[event.key];
             if (note && !activeKeys.includes(note)) {
                 setActiveKeys((prev) => [...prev, note]); // Add note to active keys
+                playSound(note);
             }
-            console.log(note);
         };
 
         const handleKeyUp = (event) => {
@@ -42,7 +54,6 @@ function App() {
             if (note) {
                 setActiveKeys((prev) => prev.filter((key) => key !== note)); // Reset the active key
             }
-            console.log("up");
         };
 
         window.addEventListener("keydown", handleKeyDown);

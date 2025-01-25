@@ -1,0 +1,42 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.container {
+    display: flex;
+    justify-content: center;
+
+    flex-wrap: wrap;
+}
+
+.white-key,
+.black-key {
+    position: relative;
+    text-align: center;
+    font-size: 12px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.white-key {
+    width: 60px;
+    height: 200px;
+    background-color: white;
+    border: 1px solid black;
+    z-index: 1;
+}
+
+.black-key {
+    width: 40px;
+    height: 120px;
+    background-color: black;
+    margin-left: -20px;
+    margin-right: -20px;
+    z-index: 2;
+}
+
+.active {
+    background-color: darkblue;
+    color: white;
+}

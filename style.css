@@ -11,7 +11,7 @@ body {
 .keyboard {
     display: flex;
     position: relative;
-    border: 2px solid #333;
+    border: 2px solid #7C7C7C;
     background-color: #fff;
     border-radius: 30px;
     overflow: hidden;
@@ -20,7 +20,7 @@ body {
 .key {
     width: 60px;
     height: 200px;
-    border: 1px solid #000;
+    border: 2px solid #7C7C7C;
     border-right: none;
     background-color: #fff;
     position: relative;
@@ -30,7 +30,7 @@ body {
 }
 
 .key:last-child {
-    border-right: 1px solid #2F3043;
+    border-right: 2px solid #2F3043;
 }
 
 .key:active {

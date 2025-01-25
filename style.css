@@ -13,7 +13,7 @@ body {
     position: relative;
     border: 2px solid #333;
     background-color: #fff;
-    border-radius: 10px;
+    border-radius: 30px;
     overflow: hidden;
 }
 
@@ -30,7 +30,7 @@ body {
 }
 
 .key:last-child {
-    border-right: 1px solid #000;
+    border-right: 1px solid #2F3043;
 }
 
 .key:active {
@@ -49,7 +49,7 @@ body {
 }
 
 .black-key:active {
-    background-color: #333;
+    background-color: #2F3043;
 }
 
 .key-container {

@@ -8,23 +8,23 @@ function App() {
     const [abcNotation, setAbcNotation] = useState("");
 
     const keyMap = {
-        a: "C", // Middle C
-        w: "^C", // C#
-        s: "D", // D
-        e: "^D", // D#
-        d: "E", // E
-        f: "F", // F
-        t: "^F", // F#
-        g: "G", // G
-        y: "^G", // G#
-        h: "A", // A
-        u: "^A", // A#
-        j: "B", // B
-        k: "c", // High C
-        o: "^c", // High C#
-        l: "d", // High D
-        p: "^d", // High D#
-        ";": "e", // High E
+        a: "C1", // Middle C
+        w: "Csh1", // C#
+        s: "D1", // D
+        e: "Dsh1", // D#
+        d: "E1", // E
+        f: "F1", // F
+        t: "Fsh1", // F#
+        g: "G1", // G
+        y: "Gsh1", // G#
+        h: "A1", // A
+        u: "Ash1", // A#
+        j: "B1", // B
+        k: "C2", // High C
+        o: "Csh2", // High C#
+        l: "D2", // High D
+        p: "Dsh2", // High D#
+        ";": "E2", // High E
         // Add more mappings for other notes...
     };
 

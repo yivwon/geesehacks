@@ -33,7 +33,7 @@ body, html {
     font-size: 40px;
     font-weight: 1000; /* Ensure extra bold weight */
     position: relative;
-    top: 110px;
+    top: 100px;
     height: 1885px;
 }
 
@@ -57,16 +57,18 @@ body, html {
     -webkit-text-fill-color: transparent;
     font-family: "Poppins-ExtraBold", sans-serif; /* Correct the font-family */
     font-size: 35px;
-    font-weight: 1000;
+    font-weight: 800;
+
     position: relative;
     top: 0px;
+    font-weight: 800;
 }
 
 .h1-span5 {
     color: #514e8f;
     font-family: "Poppins-ExtraBold", sans-serif; /* Correct the font-family */
     font-size: 35px;
-    font-weight: 1000;
+    font-weight: 800;
     position: absolute;
 }
 .h2-container {
@@ -87,7 +89,7 @@ body, html {
     color: #514E8F;
     font-weight: 1000; /* Ensure extra bold weight */
     position: relative;  /* Change to relative to work better with flexbox */
-    top: 370px;  /* Reset the top positioning */
+    top: 140px;  /* Reset the top positioning */
 }
 
 .group-6, .group-6 * {
@@ -99,7 +101,7 @@ body, html {
     position: absolute;
     overflow: visible;
     top: -5px;
-    right: 80px;
+    right: 300px;
 }
 
 /* Ensure the Button Container and other elements use the right font */
@@ -115,9 +117,8 @@ body, html {
 
 .chordcraft-button {
     font-family: "Poppins-ExtraBold", sans-serif; /* Correct the font-family */
-    font-size: 16px;
+    font-size: 14px;
     color: white;
-    font-weight: 1000;
     background: linear-gradient(
       45.14deg,
       #B583FF 0%,
@@ -126,11 +127,11 @@ body, html {
     );
     border: none;
     border-radius: 12px;
-    padding: 15px 30px;
+    padding: 12px 30px;
     cursor: pointer;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
     transition: all 0.3s ease;
-    z-index: 2000;
+    z-index: 1000;
 }
 
 .chordcraft-button:hover {
@@ -162,7 +163,7 @@ border-radius: 20px;
   border-width: 0.1px;
   height: 160px;
   width: 360px;
-  bottom: -270px;
+  bottom: 0px;
   left: 24%;
   position: absolute;
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
@@ -181,7 +182,7 @@ border-radius: 20px;
   border-width: 0.1px;
   height: 160px;
   width: 360px;
-  bottom: -270px;
+  bottom: 0px;
   right: 24%;
   position: absolute;
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
@@ -202,7 +203,7 @@ border-radius: 20px;
   border-width: 0.1px;
   height: 160px;
   width: 360px;
-  bottom: -600px;
+  bottom: -180px;
   left: 24%;
   position: absolute;
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
@@ -221,7 +222,7 @@ border-radius: 20px;
   border-width: 0.1px;
   height: 160px;
   width: 360px;
-  bottom: -600px;
+  bottom: -180px;
   right: 24%;
   position: absolute;
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
@@ -275,13 +276,4 @@ border-radius: 20px;
     width:100%;
     height:100%;
     position: absolute;
-}
-
-.line-11 {
-    height: 300px;
-    left: 50%;
-    top: 340px;
-    position: absolute;
-    z-index: 001;
-
 }

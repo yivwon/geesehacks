@@ -1,4 +1,9 @@
-const Keyboard = ({ activeKeys, onClear }) => {
+import { useState } from 'react';
+import { database } from '../firebase/firebase';
+import { ref, push } from 'firebase/database';
+import Modal from './Modal';
+
+const Keyboard = ({ activeKeys, onClear, abcNotation, setIsModalOpen, isModalOpen }) => {
     const keyLabels = {
         "C": "a",
         "^C": "w",
@@ -39,6 +44,40 @@ const Keyboard = ({ activeKeys, onClear }) => {
         { note: "e", type: "white" }
     ];
 
+    const handleSaveClick = (e) => {
+        e.preventDefault();
+        if (!abcNotation) return;
+        
+        setIsModalOpen(true);
+        
+        activeKeys.forEach(key => {
+            const audio = new Audio(`/sounds/${fileNameMap[key]}.mp3`);
+            audio.pause();
+        });
+    };
+
+    const handleModalClose = () => {
+        setIsModalOpen(false);
+    };
+
+    const handleSaveConfirm = async (title, description) => {
+        try {
+            const musicRef = ref(database, 'sheetMusic');
+            await push(musicRef, {
+                notation: abcNotation,
+                title,
+                description,
+                timestamp: Date.now()
+            });
+            alert('Sheet music saved successfully!');
+            setIsModalOpen(false);
+            onClear();
+        } catch (error) {
+            console.error('Error saving sheet music:', error);
+            alert('Failed to save sheet music');
+        }
+    };
+
     return (
         <div>
             <div className="container">
@@ -47,7 +86,7 @@ const Keyboard = ({ activeKeys, onClear }) => {
                         key={index}
                         className={`${key.type}-key ${
                             activeKeys.includes(key.note) ? "active" : ""
-                        }`}
+                        } ${isModalOpen ? 'disabled' : ''}`}
                     >
                         <div className="key-label">{keyLabels[key.note]}</div>
                     </div>
@@ -55,8 +94,13 @@ const Keyboard = ({ activeKeys, onClear }) => {
             </div>
             <div className="button-container">
                 <button onClick={onClear} className="clear-button">Clear</button>
-                <button className="save-button">Save</button>
+                <button onClick={handleSaveClick} className="save-button">Save</button>
             </div>
+            <Modal
+                isOpen={isModalOpen}
+                onClose={handleModalClose}
+                onConfirm={handleSaveConfirm}
+            />
         </div>
     );
 };

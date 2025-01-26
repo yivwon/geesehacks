@@ -6,7 +6,17 @@ import { Routes, Route, BrowserRouter, Link } from "react-router-dom";
 import "./style/keyboard.css";
 
 // Create a separate KeyboardPage component
-function KeyboardPage({ activeKeys, keyMap, abcNotation, onClear }) {
+function KeyboardPage({ activeKeys, keyMap, abcNotation, onClear, setIsModalOpen, isModalOpen, setIsOnKeyboardPage }) {
+    useEffect(() => {
+        // Set keyboard page as active when component mounts
+        setIsOnKeyboardPage(true);
+        
+        return () => {
+            // Set keyboard page as inactive when component unmounts
+            setIsOnKeyboardPage(false);
+        };
+    }, [setIsOnKeyboardPage]);
+
     useEffect(() => {
         // Render the sheet music with existing notation when component mounts
         const abcString = `X:1
@@ -39,6 +49,9 @@ ${abcNotation}`;
                 activeKeys={activeKeys}
                 keyMap={keyMap}
                 onClear={onClear}
+                abcNotation={abcNotation}
+                setIsModalOpen={setIsModalOpen}
+                isModalOpen={isModalOpen}
             />
         </div>
     );
@@ -49,6 +62,9 @@ function App() {
     const [abcNotation, setAbcNotation] = useState("");
     const debounceTimer = useRef(null); // Timer for debouncing
     const [heldKeys, setHeldKeys] = useState(new Set()); // Add this state
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isKeyboardEnabled, setIsKeyboardEnabled] = useState(true);
+    const [isOnKeyboardPage, setIsOnKeyboardPage] = useState(false); // Add this state
 
     const keyMap = {
         a: "C", // Middle C
@@ -112,12 +128,18 @@ function App() {
     };
 
     const handleKeyDown = (event) => {
+        // If we're on keyboard page but modal is open, or keyboard is disabled, don't handle piano events
+        if (!isOnKeyboardPage || !isKeyboardEnabled || isModalOpen) return;
+        
+        // Check if we're typing in an input or textarea
+        if (event.target.tagName === 'INPUT' || event.target.tagName === 'TEXTAREA') return;
+        
         // Prevent key repeat
         if (event.repeat || heldKeys.has(event.key)) return;
         
         const note = keyMap[event.key];
         if (note && !activeKeys.includes(note)) {
-            setHeldKeys(prev => new Set([...prev, event.key])); // Track held key
+            setHeldKeys(prev => new Set([...prev, event.key]));
             setActiveKeys((prev) => [...prev, note]);
 
             // Clear the existing debounce timer
@@ -153,6 +175,12 @@ function App() {
     };
 
     const handleKeyUp = (event) => {
+        // If modal is open or typing in form fields, don't handle piano events
+        if (!isOnKeyboardPage || isModalOpen) return;
+        
+        // Check if we're typing in an input or textarea
+        if (event.target.tagName === 'INPUT' || event.target.tagName === 'TEXTAREA') return;
+
         const note = keyMap[event.key];
         if (note) {
             setHeldKeys(prev => {
@@ -165,17 +193,25 @@ function App() {
     };
 
     useEffect(() => {
-        window.addEventListener("keydown", handleKeyDown);
-        window.addEventListener("keyup", handleKeyUp);
+        // Only add event listeners if we're on the keyboard page
+        if (isOnKeyboardPage) {
+            window.addEventListener("keydown", handleKeyDown);
+            window.addEventListener("keyup", handleKeyUp);
 
-        return () => {
-            window.removeEventListener("keydown", handleKeyDown);
-            window.removeEventListener("keyup", handleKeyUp);
-        };
-    }, [activeKeys]);
+            return () => {
+                window.removeEventListener("keydown", handleKeyDown);
+                window.removeEventListener("keyup", handleKeyUp);
+            };
+        }
+    }, [activeKeys, isOnKeyboardPage]); // Add isOnKeyboardPage to dependencies
 
     const clearSheetMusic = () => {
         setAbcNotation("");
+    };
+
+    const handleSetModalOpen = (value) => {
+        setIsModalOpen(value);
+        setIsKeyboardEnabled(!value);  // Disable keyboard when modal opens
     };
 
     return (
@@ -197,6 +233,9 @@ function App() {
                                 keyMap={keyMap}
                                 abcNotation={abcNotation}
                                 onClear={clearSheetMusic}
+                                setIsModalOpen={handleSetModalOpen}
+                                isModalOpen={isModalOpen}
+                                setIsOnKeyboardPage={setIsOnKeyboardPage} // Pass this prop
                             />
                         }
                     />

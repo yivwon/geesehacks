@@ -6,16 +6,15 @@ import { Routes, Route, BrowserRouter, Link } from "react-router-dom";
 import "./style/keyboard.css";
 
 // Create a separate KeyboardPage component
-function KeyboardPage({ activeKeys, keyMap, abcNotation }) {
+function KeyboardPage({ activeKeys, keyMap, abcNotation, onClear }) {
     useEffect(() => {
         // Render the sheet music with existing notation when component mounts
         const abcString = `X:1
-T:Live Sheet Music
 M:4/4
 L:1/4
 K:C
 ${abcNotation}`;
-        
+
         ABCJS.renderAbc("sheet-music", abcString, {
             responsive: 'resize',
             wrap: {
@@ -33,13 +32,15 @@ ${abcNotation}`;
     }, [abcNotation]); // Re-render when notation changes
 
     return (
-        <>
+        <div className="keyboard-content">
+            <h1>Live Sheet Music</h1>
             <div id="sheet-music"></div>
             <Keyboard
                 activeKeys={activeKeys}
                 keyMap={keyMap}
+                onClear={onClear}
             />
-        </>
+        </div>
     );
 }
 
@@ -47,6 +48,7 @@ function App() {
     const [activeKeys, setActiveKeys] = useState([]);
     const [abcNotation, setAbcNotation] = useState("");
     const debounceTimer = useRef(null); // Timer for debouncing
+    const [heldKeys, setHeldKeys] = useState(new Set()); // Add this state
 
     const keyMap = {
         a: "C", // Middle C
@@ -110,9 +112,13 @@ function App() {
     };
 
     const handleKeyDown = (event) => {
+        // Prevent key repeat
+        if (event.repeat || heldKeys.has(event.key)) return;
+        
         const note = keyMap[event.key];
         if (note && !activeKeys.includes(note)) {
-            setActiveKeys((prev) => [...prev, note]); // Add the note to active keys
+            setHeldKeys(prev => new Set([...prev, event.key])); // Track held key
+            setActiveKeys((prev) => [...prev, note]);
 
             // Clear the existing debounce timer
             if (debounceTimer.current) {
@@ -124,13 +130,13 @@ function App() {
                 // Play sound and update ABC notation as a chord
                 const sortedKeys = [...activeKeys, note].sort();
                 const chord = `[${sortedKeys.join(" ")}]`; // Format as a chord
-                
+
                 // Add bar line after every 4 beats (notes or chords)
                 setAbcNotation((prev) => {
                     // Split into individual elements but preserve chords as single units
                     const elements = prev.match(/\[[^\]]+\]|[^\s|]+/g) || [];
                     const newElements = [...elements, chord];
-                    
+
                     // Group into measures of 4 beats (each element counts as 1 beat)
                     return newElements.reduce((acc, element, index) => {
                         if (index > 0 && index % 4 === 0) {
@@ -139,7 +145,7 @@ function App() {
                         return `${acc} ${element}`;
                     }, '').trim() + (newElements.length % 4 === 0 ? ' |' : '');
                 });
-                
+
                 playSound(sortedKeys); // Play all notes in the chord
                 setActiveKeys([]); // Reset active keys after playing the chord
             }, 200); // 200ms debounce delay
@@ -149,7 +155,12 @@ function App() {
     const handleKeyUp = (event) => {
         const note = keyMap[event.key];
         if (note) {
-            setActiveKeys((prev) => prev.filter((key) => key !== note)); // Remove the note
+            setHeldKeys(prev => {
+                const newSet = new Set(prev);
+                newSet.delete(event.key);
+                return newSet;
+            });
+            setActiveKeys((prev) => prev.filter((key) => key !== note));
         }
     };
 
@@ -163,9 +174,13 @@ function App() {
         };
     }, [activeKeys]);
 
+    const clearSheetMusic = () => {
+        setAbcNotation("");
+    };
+
     return (
         <BrowserRouter>
-            <div>
+            <div className="app-container">
                 <nav>
                     <Link to="/">Home</Link> |{" "}
                     <Link to="/keyboard">Keyboard</Link> |{" "}
@@ -181,6 +196,7 @@ function App() {
                                 activeKeys={activeKeys}
                                 keyMap={keyMap}
                                 abcNotation={abcNotation}
+                                onClear={clearSheetMusic}
                             />
                         }
                     />
@@ -193,7 +209,7 @@ function App() {
 
 function Home() {
     return (
-        <div>
+        <div className="home-content">
             <h1>Welcome to the Piano App</h1>
             <p>Select "Keyboard" from the menu to play.</p>
         </div>

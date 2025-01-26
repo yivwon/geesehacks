@@ -1,4 +1,4 @@
-Interactive Piano Sheet Music Webapp
+**Interactive Piano Sheet Music Webapp**
 🎹 Project Overview
 An innovative web application that transforms piano key presses into digital sheet music in real-time.
 Key Features

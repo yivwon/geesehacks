@@ -249,7 +249,7 @@ function App() {
 function Home() {
     return (
         <div className="home-content">
-            <h1>Welcome to the Piano App</h1>
+            <h1>Welcome to the ChordCraft</h1>
             <p>Select "Keyboard" from the menu to play.</p>
         </div>
     );

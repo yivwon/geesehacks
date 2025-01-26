@@ -125,18 +125,19 @@ function App() {
                 const sortedKeys = [...activeKeys, note].sort();
                 const chord = `[${sortedKeys.join(" ")}]`; // Format as a chord
                 
-                // Add bar line after every 4 notes/chords
+                // Add bar line after every 4 beats (notes or chords)
                 setAbcNotation((prev) => {
-                    const notes = prev.split('|').join(' ').trim().split(' ').filter(n => n); // Get existing notes
-                    const newNotes = [...notes, chord];
+                    // Split into individual elements but preserve chords as single units
+                    const elements = prev.match(/\[[^\]]+\]|[^\s|]+/g) || [];
+                    const newElements = [...elements, chord];
                     
-                    // Group notes into measures of 4
-                    return newNotes.reduce((acc, note, index) => {
+                    // Group into measures of 4 beats (each element counts as 1 beat)
+                    return newElements.reduce((acc, element, index) => {
                         if (index > 0 && index % 4 === 0) {
-                            return `${acc} | ${note}`;
+                            return `${acc} | ${element}`;
                         }
-                        return `${acc} ${note}`;
-                    }, '').trim() + (newNotes.length % 4 === 0 ? ' |' : '');
+                        return `${acc} ${element}`;
+                    }, '').trim() + (newElements.length % 4 === 0 ? ' |' : '');
                 });
                 
                 playSound(sortedKeys); // Play all notes in the chord

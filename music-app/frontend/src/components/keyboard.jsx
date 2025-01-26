@@ -69,7 +69,6 @@ const Keyboard = ({ activeKeys, onClear, abcNotation, setIsModalOpen, isModalOpe
                 description,
                 timestamp: Date.now()
             });
-            alert('Sheet music saved successfully!');
             setIsModalOpen(false);
             onClear();
         } catch (error) {

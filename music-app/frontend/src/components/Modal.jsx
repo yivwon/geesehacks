@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { toast } from 'react-toastify';
 
 const Modal = ({ isOpen, onClose, onConfirm }) => {
     if (!isOpen) return null;
@@ -6,11 +7,17 @@ const Modal = ({ isOpen, onClose, onConfirm }) => {
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        onConfirm(title, description);
-        setTitle('');
-        setDescription('');
+        try {
+            await onConfirm(title, description);
+            toast.success('Sheet music saved successfully!');
+            setTitle('');
+            setDescription('');
+        } catch (error) {
+            toast.error('Failed to save sheet music');
+            console.error('Error saving sheet music:', error);
+        }
     };
 
     return (

@@ -415,3 +415,21 @@ nav a:hover {
         padding: 1.5rem;
     }
 }
+
+/* Toast customization */
+.Toastify__toast {
+    font-family: 'Poppins', sans-serif;
+    border-radius: 8px;
+}
+
+.Toastify__toast--success {
+    background: #4F46E5;
+}
+
+.Toastify__toast--error {
+    background: #EF4444;
+}
+
+.Toastify__progress-bar {
+    background: rgba(255, 255, 255, 0.7);
+}

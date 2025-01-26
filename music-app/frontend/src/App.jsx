@@ -1,9 +1,11 @@
 import { useState, useEffect, useRef } from "react";
 import Keyboard from "./components/keyboard";
-import Saved from "./components/Saved";
+import Saved from "./components/saved";
 import ABCJS from "abcjs";
 import { Routes, Route, BrowserRouter, Link } from "react-router-dom";
 import "./style/keyboard.css";
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 // Create a separate KeyboardPage component
 function KeyboardPage({ activeKeys, keyMap, abcNotation, onClear, setIsModalOpen, isModalOpen, setIsOnKeyboardPage }) {
@@ -235,12 +237,25 @@ function App() {
                                 onClear={clearSheetMusic}
                                 setIsModalOpen={handleSetModalOpen}
                                 isModalOpen={isModalOpen}
-                                setIsOnKeyboardPage={setIsOnKeyboardPage} // Pass this prop
+                                setIsOnKeyboardPage={setIsOnKeyboardPage}
                             />
                         }
                     />
                     <Route path="/saved" element={<Saved />} />
                 </Routes>
+                
+                <ToastContainer
+                    position="bottom-right"
+                    autoClose={3000}
+                    hideProgressBar={false}
+                    newestOnTop={false}
+                    closeOnClick
+                    rtl={false}
+                    pauseOnFocusLoss
+                    draggable
+                    pauseOnHover
+                    theme="dark"
+                />
             </div>
         </BrowserRouter>
     );

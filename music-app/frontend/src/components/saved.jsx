@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { database } from '../firebase/firebase';
 import { ref, onValue, remove } from 'firebase/database';
 import ABCJS from 'abcjs';
+import { toast } from 'react-toastify';
 
 const Saved = () => {
     const [savedPieces, setSavedPieces] = useState([]);
@@ -52,10 +53,10 @@ const Saved = () => {
         try {
             const musicRef = ref(database, `sheetMusic/${id}`);
             await remove(musicRef);
-            alert('Sheet music deleted successfully!');
+            toast.success('Sheet music deleted successfully!');
         } catch (error) {
             console.error('Error deleting sheet music:', error);
-            alert('Failed to delete sheet music');
+            toast.error('Failed to delete sheet music');
         }
     };
 

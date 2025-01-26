@@ -1,6 +1,8 @@
 import { useState, useEffect, useRef } from "react";
 import Keyboard from "./components/keyboard";
 import ABCJS from "abcjs";
+import { Routes, Route, BrowserRouter, Link } from "react-router-dom";
+import DropdownMenu from "./components/nav";
 import "./style/keyboard.css";
 
 function App() {
@@ -120,9 +122,38 @@ function App() {
     }, [activeKeys]);
 
     return (
+        <BrowserRouter>
+            <div>
+                <nav>
+                    <Link to="/">Home</Link> |{" "}
+                    <Link to="/keyboard">Keyboard</Link>
+                </nav>
+
+                <Routes>
+                    <Route path="/" element={<Home />} />
+                    <Route
+                        path="/keyboard"
+                        element={
+                            <>
+                                <div id="sheet-music"></div>
+                                <Keyboard
+                                    activeKeys={activeKeys}
+                                    keyMap={keyMap}
+                                />
+                            </>
+                        }
+                    />
+                </Routes>
+            </div>
+        </BrowserRouter>
+    );
+}
+
+function Home() {
+    return (
         <div>
-            <div id="sheet-music"></div>
-            <Keyboard activeKeys={activeKeys} keyMap={keyMap} />
+            <h1>Welcome to the Piano App</h1>
+            <p>Select "Keyboard" from the menu to play.</p>
         </div>
     );
 }

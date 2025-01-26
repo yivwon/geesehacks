@@ -1,4 +1,5 @@
 const Keyboard = ({ activeKeys }) => {
+    console.log("hello");
     const pianoKeys = [
         { note: "C", type: "white" },
         { note: "^C", type: "black" }, // C#

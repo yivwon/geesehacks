@@ -1,0 +1,28 @@
+.saved-music {
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.music-list {
+    display: grid;
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.music-item {
+    padding: 1.5rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: white;
+}
+
+.music-item h3 {
+    margin: 0 0 1rem 0;
+    color: #333;
+}
+
+.music-item p {
+    color: #666;
+    margin-bottom: 1rem;
+} 

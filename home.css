@@ -79,7 +79,7 @@ body, html {
     height: 100%;
     top: 0;
     width: 100%;
-    z-index: 999;
+    z-index: 1;
 }
 
 .h2 {
@@ -89,7 +89,7 @@ body, html {
     color: #514E8F;
     font-weight: 1000; /* Ensure extra bold weight */
     position: relative;  /* Change to relative to work better with flexbox */
-    top: 140px;  /* Reset the top positioning */
+    top: 560px;  /* Reset the top positioning */
 }
 
 .group-6, .group-6 * {
@@ -101,7 +101,7 @@ body, html {
     position: absolute;
     overflow: visible;
     top: -5px;
-    right: 300px;
+    right: 40px;
 }
 
 /* Ensure the Button Container and other elements use the right font */
@@ -163,7 +163,7 @@ border-radius: 20px;
   border-width: 0.1px;
   height: 160px;
   width: 360px;
-  bottom: 0px;
+  bottom: -420px;
   left: 24%;
   position: absolute;
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
@@ -182,7 +182,7 @@ border-radius: 20px;
   border-width: 0.1px;
   height: 160px;
   width: 360px;
-  bottom: 0px;
+  bottom: -420px;
   right: 24%;
   position: absolute;
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
@@ -203,7 +203,7 @@ border-radius: 20px;
   border-width: 0.1px;
   height: 160px;
   width: 360px;
-  bottom: -180px;
+  bottom: -600px;
   left: 24%;
   position: absolute;
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
@@ -222,7 +222,7 @@ border-radius: 20px;
   border-width: 0.1px;
   height: 160px;
   width: 360px;
-  bottom: -180px;
+  bottom: -600px;
   right: 24%;
   position: absolute;
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
@@ -276,4 +276,21 @@ border-radius: 20px;
     width:100%;
     height:100%;
     position: absolute;
+}
+
+
+.line-11 {
+    height: 300px;
+    left: 50%;
+    top: 340px;
+    position: absolute;
+    z-index: 001;
+
+}
+
+.quote {
+    position: absolute;
+    height: 380px;
+    left: 37%;
+    top: 530px;
 }

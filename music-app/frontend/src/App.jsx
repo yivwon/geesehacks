@@ -328,7 +328,7 @@ function App() {
 function Home() {
     return (
         <div className="home-content">
-            <h1>Welcome to the ChordCraft</h1>
+            <h1>Welcome to ChordCraft</h1>
         </div>
     );
 }

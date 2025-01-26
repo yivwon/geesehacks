@@ -54,8 +54,13 @@ body {
 #sheet-music {
     width: 100%;
     max-width: 900px;
-    margin: 5px auto;
+    margin: 0.25rem auto;
     overflow-x: hidden;
+    line-height: 1.2;
+}
+
+#sheet-music img {
+    margin: 0.15rem 0;
 }
 
 .main-nav {
@@ -132,16 +137,13 @@ body {
     text-align: center;
 }
 
-.home-content h1 {
-    margin-top: -1rem;
-}
-
 /* Update existing nav styles */
 nav {
-    padding: 0.5rem;
-    margin: 1rem auto;
+    padding: 1.5rem 0.5rem;
+    margin: 2rem auto 1rem auto;
     max-width: 1200px;
     text-align: left;
+    min-height: 40px;
 }
 
 nav a {
@@ -169,7 +171,10 @@ nav a:hover {
 
 /* Add padding to the outer container */
 .app-container {
-    padding: 0 1rem;
+    padding: 1rem;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
 .key-label {
@@ -199,31 +204,42 @@ nav a:hover {
 /* Add these styles */
 .music-list {
     display: grid;
+    grid-template-columns: 1fr;
     gap: 2rem;
-    margin-top: 3rem;
+    margin-top: 2rem;
     padding: 0 1rem;
+    width: 100%;
+    max-width: 1600px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .music-item {
-    padding: 2rem;
+    padding: 1.5rem 2rem;
     border: 2px solid white;
     border-radius: 8px;
     background-color: rgba(255, 255, 255, 0.1);
-    margin-bottom: 1rem;
+    min-width: 350px;
+    max-width: 700px;
+    width: 100%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
 }
 
 .music-item-header {
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1rem;
+    align-items: flex-start;
+    margin-bottom: 0.25rem;
 }
 
 .music-item h3,
 .music-item p,
 .music-item .date {
     color: white;
-    margin-bottom: 1rem;
+    margin-bottom: 0.25rem;
 }
 
 .music-item h3 {
@@ -338,4 +354,64 @@ nav a:hover {
 .black-key.disabled {
     pointer-events: none;
     opacity: 0.7;
+}
+
+/* Update content containers to use viewport height */
+.home-content,
+.keyboard-content,
+.saved-music {
+    padding: 1rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    text-align: center;
+    min-height: 100vh;  /* Changed from calc(100vh - 80px) */
+}
+
+/* Ensure content fills available space */
+.home-content,
+.keyboard-content,
+.saved-music {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.home-content h1 {
+    margin-top: -1.5rem;
+    margin-bottom: 1rem;
+}
+
+.keyboard-content h1 {
+    margin-top: -1.5rem;
+    margin-bottom: -1rem;
+}
+
+.saved-music h1 {
+    margin-top: -1.5rem;
+    margin-bottom: 1rem;
+}
+
+/* Update media queries for responsive layout */
+@media (min-width: 768px) {
+    .music-list {
+        grid-template-columns: repeat(2, 1fr);
+        padding: 0 2rem;
+        gap: 2.5rem;
+    }
+    
+    .music-item {
+        min-width: 450px;
+    }
+}
+
+/* Remove the 3-column layout */
+@media (max-width: 767px) {
+    .music-list {
+        padding: 0 1rem;
+    }
+    
+    .music-item {
+        min-width: unset;
+        padding: 1.5rem;
+    }
 }

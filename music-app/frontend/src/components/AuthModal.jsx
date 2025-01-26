@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
 
@@ -8,6 +8,12 @@ const AuthModal = ({ isOpen, onClose }) => {
     const [isSignUp, setIsSignUp] = useState(false);
     const { signIn, signUp } = useAuth();
     const navigate = useNavigate();
+
+    // Clear fields when modal opens or when switching between sign in/up
+    useEffect(() => {
+        setEmail('');
+        setPassword('');
+    }, [isOpen, isSignUp]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();

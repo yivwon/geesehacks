@@ -3,18 +3,21 @@ import { database } from '../firebase/firebase';
 import { ref, onValue, remove } from 'firebase/database';
 import ABCJS from 'abcjs';
 import { toast } from 'react-toastify';
+import { useAuth } from '../contexts/AuthContext';
 
 const Saved = () => {
     const [savedPieces, setSavedPieces] = useState([]);
+    const { user } = useAuth();
 
     useEffect(() => {
-        const musicRef = ref(database, 'sheetMusic');
+        if (!user) return;
+
+        // Update reference to user-specific path
+        const musicRef = ref(database, `users/${user.uid}/sheetMusic`);
         
-        // Listen for changes in the database
         const unsubscribe = onValue(musicRef, (snapshot) => {
             const data = snapshot.val();
             if (data) {
-                // Convert object to array and add the key as id
                 const piecesArray = Object.entries(data).map(([id, piece]) => ({
                     id,
                     ...piece
@@ -25,9 +28,8 @@ const Saved = () => {
             }
         });
 
-        // Cleanup subscription
         return () => unsubscribe();
-    }, []);
+    }, [user]);
 
     // Render sheet music for each piece
     useEffect(() => {
@@ -51,7 +53,8 @@ const Saved = () => {
 
     const handleDelete = async (id) => {
         try {
-            const musicRef = ref(database, `sheetMusic/${id}`);
+            // Update reference to include user ID
+            const musicRef = ref(database, `users/${user.uid}/sheetMusic/${id}`);
             await remove(musicRef);
             toast.success('Sheet music deleted successfully!');
         } catch (error) {

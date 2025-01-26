@@ -2,10 +2,12 @@ import { useState, useEffect, useRef } from "react";
 import Keyboard from "./components/keyboard";
 import Saved from "./components/saved";
 import ABCJS from "abcjs";
-import { Routes, Route, BrowserRouter, Link } from "react-router-dom";
+import { Routes, Route, BrowserRouter, Link, Navigate, useNavigate } from "react-router-dom";
 import "./style/keyboard.css";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { AuthProvider, useAuth } from './contexts/AuthContext';
+import AuthModal from "./components/AuthModal";
 
 // Create a separate KeyboardPage component
 function KeyboardPage({ activeKeys, keyMap, abcNotation, onClear, setIsModalOpen, isModalOpen, setIsOnKeyboardPage }) {
@@ -57,6 +59,61 @@ ${abcNotation}`;
             />
         </div>
     );
+}
+
+function PrivateRoute({ children }) {
+    const { user } = useAuth();
+    return user ? children : <Navigate to="/" />;
+}
+
+function Navigation() {
+    const { user, signOut } = useAuth();
+    const navigate = useNavigate();
+    const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+
+    const handleSignOut = async () => {
+        try {
+            await signOut();
+            navigate('/');
+        } catch (error) {
+            console.error('Error signing out:', error);
+        }
+    };
+
+    return (
+        <>
+            <nav>
+                {user ? (
+                    <>
+                        <Link to="/keyboard">Keyboard</Link> |{" "}
+                        <Link to="/saved">Saved</Link> |{" "}
+                        <button onClick={handleSignOut} className="signout-button">
+                            Sign Out
+                        </button>
+                    </>
+                ) : (
+                    <>
+                        <Link to="/">Home</Link> |{" "}
+                        <button 
+                            onClick={() => setIsAuthModalOpen(true)} 
+                            className="nav-button"
+                        >
+                            Sign In
+                        </button>
+                    </>
+                )}
+            </nav>
+            <AuthModal 
+                isOpen={isAuthModalOpen} 
+                onClose={() => setIsAuthModalOpen(false)} 
+            />
+        </>
+    );
+}
+
+// Wrap Navigation in a separate component to use hooks
+function NavigationWrapper() {
+    return <Navigation />;
 }
 
 function App() {
@@ -218,45 +275,52 @@ function App() {
 
     return (
         <BrowserRouter>
-            <div className="app-container">
-                <nav>
-                    <Link to="/">Home</Link> |{" "}
-                    <Link to="/keyboard">Keyboard</Link> |{" "}
-                    <Link to="/saved">Saved</Link>
-                </nav>
+            <AuthProvider>
+                <div className="app-container">
+                    <NavigationWrapper />
 
-                <Routes>
-                    <Route path="/" element={<Home />} />
-                    <Route
-                        path="/keyboard"
-                        element={
-                            <KeyboardPage
-                                activeKeys={activeKeys}
-                                keyMap={keyMap}
-                                abcNotation={abcNotation}
-                                onClear={clearSheetMusic}
-                                setIsModalOpen={handleSetModalOpen}
-                                isModalOpen={isModalOpen}
-                                setIsOnKeyboardPage={setIsOnKeyboardPage}
-                            />
-                        }
+                    <Routes>
+                        <Route path="/" element={<Home />} />
+                        <Route
+                            path="/keyboard"
+                            element={
+                                <PrivateRoute>
+                                    <KeyboardPage
+                                        activeKeys={activeKeys}
+                                        keyMap={keyMap}
+                                        abcNotation={abcNotation}
+                                        onClear={clearSheetMusic}
+                                        setIsModalOpen={handleSetModalOpen}
+                                        isModalOpen={isModalOpen}
+                                        setIsOnKeyboardPage={setIsOnKeyboardPage}
+                                    />
+                                </PrivateRoute>
+                            }
+                        />
+                        <Route
+                            path="/saved"
+                            element={
+                                <PrivateRoute>
+                                    <Saved />
+                                </PrivateRoute>
+                            }
+                        />
+                    </Routes>
+                    
+                    <ToastContainer
+                        position="bottom-right"
+                        autoClose={3000}
+                        hideProgressBar={false}
+                        newestOnTop={false}
+                        closeOnClick
+                        rtl={false}
+                        pauseOnFocusLoss
+                        draggable
+                        pauseOnHover
+                        theme="dark"
                     />
-                    <Route path="/saved" element={<Saved />} />
-                </Routes>
-                
-                <ToastContainer
-                    position="bottom-right"
-                    autoClose={3000}
-                    hideProgressBar={false}
-                    newestOnTop={false}
-                    closeOnClick
-                    rtl={false}
-                    pauseOnFocusLoss
-                    draggable
-                    pauseOnHover
-                    theme="dark"
-                />
-            </div>
+                </div>
+            </AuthProvider>
         </BrowserRouter>
     );
 }
@@ -265,7 +329,6 @@ function Home() {
     return (
         <div className="home-content">
             <h1>Welcome to the ChordCraft</h1>
-            <p>Select "Keyboard" from the menu to play.</p>
         </div>
     );
 }

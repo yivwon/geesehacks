@@ -2,8 +2,11 @@ import { useState } from 'react';
 import { database } from '../firebase/firebase';
 import { ref, push } from 'firebase/database';
 import Modal from './Modal';
+import { useAuth } from '../contexts/AuthContext';
 
 const Keyboard = ({ activeKeys, onClear, abcNotation, setIsModalOpen, isModalOpen }) => {
+    const { user } = useAuth();
+
     const keyLabels = {
         "C": "a",
         "^C": "w",
@@ -62,7 +65,7 @@ const Keyboard = ({ activeKeys, onClear, abcNotation, setIsModalOpen, isModalOpe
 
     const handleSaveConfirm = async (title, description) => {
         try {
-            const musicRef = ref(database, 'sheetMusic');
+            const musicRef = ref(database, `users/${user.uid}/sheetMusic`);
             await push(musicRef, {
                 notation: abcNotation,
                 title,

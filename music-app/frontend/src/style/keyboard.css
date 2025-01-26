@@ -433,3 +433,104 @@ nav a:hover {
 .Toastify__progress-bar {
     background: rgba(255, 255, 255, 0.7);
 }
+
+/* Add these styles to your existing keyboard.css */
+
+.signin-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 60vh;
+    text-align: center;
+    padding: 2rem;
+}
+
+.signin-button {
+    background-color: #4F46E5;
+    color: white;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin-top: 2rem;
+}
+
+.signin-button:hover {
+    transform: scale(1.05);
+    background-color: #4338CA;
+}
+
+.signout-button {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.25rem;
+    cursor: pointer;
+    padding: 0.5rem 1rem;
+}
+
+.signout-button:hover {
+    color: #E5E5F3;
+}
+
+/* Auth Modal Styles */
+.auth-modal {
+    max-width: 400px;
+}
+
+.auth-modal input {
+    width: 100%;
+    padding: 8px;
+    margin-top: 4px;
+    border: 1px solid #666;
+    border-radius: 4px;
+    background-color: #333;
+    color: white;
+}
+
+.auth-toggle {
+    margin: 1rem 0;
+    text-align: center;
+}
+
+.toggle-button {
+    background: none;
+    border: none;
+    color: #4F46E5;
+    text-decoration: underline;
+    cursor: pointer;
+    padding: 0;
+}
+
+.toggle-button:hover {
+    color: #4338CA;
+}
+
+.auth-modal .form-group {
+    margin-bottom: 1rem;
+}
+
+.auth-modal label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: white;
+}
+
+/* Update nav button styling to match Link */
+.nav-button {
+    background: none;
+    border: none;
+    color: white;
+    font-weight: 500;
+    font-size: 1.25rem;
+    cursor: pointer;
+    padding: 0.5rem 1rem;
+    font-family: inherit;
+}
+
+.nav-button:hover {
+    color: #E9EBF4;
+}

@@ -1,8 +1,8 @@
 import { useState, useEffect, useRef } from "react";
 import Keyboard from "./components/keyboard";
+import Saved from "./components/Saved";
 import ABCJS from "abcjs";
 import { Routes, Route, BrowserRouter, Link } from "react-router-dom";
-import DropdownMenu from "./components/nav";
 import "./style/keyboard.css";
 
 // Create a separate KeyboardPage component
@@ -168,7 +168,8 @@ function App() {
             <div>
                 <nav>
                     <Link to="/">Home</Link> |{" "}
-                    <Link to="/keyboard">Keyboard</Link>
+                    <Link to="/keyboard">Keyboard</Link> |{" "}
+                    <Link to="/saved">Saved</Link>
                 </nav>
 
                 <Routes>
@@ -183,6 +184,7 @@ function App() {
                             />
                         }
                     />
+                    <Route path="/saved" element={<Saved />} />
                 </Routes>
             </div>
         </BrowserRouter>

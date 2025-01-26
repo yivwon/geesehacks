@@ -5,6 +5,44 @@ import { Routes, Route, BrowserRouter, Link } from "react-router-dom";
 import DropdownMenu from "./components/nav";
 import "./style/keyboard.css";
 
+// Create a separate KeyboardPage component
+function KeyboardPage({ activeKeys, keyMap, abcNotation }) {
+    useEffect(() => {
+        // Render the sheet music with existing notation when component mounts
+        const abcString = `X:1
+T:Live Sheet Music
+M:4/4
+L:1/4
+K:C
+${abcNotation}`;
+        
+        ABCJS.renderAbc("sheet-music", abcString, {
+            responsive: 'resize',
+            wrap: {
+                preferredMeasuresPerLine: 4,
+                minSpacing: 2.7,
+                maxSpacing: 3.0
+            },
+            staffwidth: 800,
+            format: {
+                gchordfont: "italic 12px Arial",
+                measurebox: true,
+                breaklimit: 4
+            }
+        });
+    }, [abcNotation]); // Re-render when notation changes
+
+    return (
+        <>
+            <div id="sheet-music"></div>
+            <Keyboard
+                activeKeys={activeKeys}
+                keyMap={keyMap}
+            />
+        </>
+    );
+}
+
 function App() {
     const [activeKeys, setActiveKeys] = useState([]);
     const [abcNotation, setAbcNotation] = useState("");
@@ -71,15 +109,6 @@ function App() {
         }
     };
 
-    const renderSheetMusic = () => {
-        const abcString = `X:1\nT:Live Sheet Music\nK:C\n${abcNotation}`;
-        ABCJS.renderAbc("sheet-music", abcString);
-    };
-
-    useEffect(() => {
-        renderSheetMusic();
-    }, [abcNotation]);
-
     const handleKeyDown = (event) => {
         const note = keyMap[event.key];
         if (note && !activeKeys.includes(note)) {
@@ -95,11 +124,23 @@ function App() {
                 // Play sound and update ABC notation as a chord
                 const sortedKeys = [...activeKeys, note].sort();
                 const chord = `[${sortedKeys.join(" ")}]`; // Format as a chord
-                setAbcNotation((prev) => `${prev} ${chord}`); // Append to notation
+                
+                // Add bar line after every 4 notes/chords
+                setAbcNotation((prev) => {
+                    const notes = prev.split('|').join(' ').trim().split(' ').filter(n => n); // Get existing notes
+                    const newNotes = [...notes, chord];
+                    
+                    // Group notes into measures of 4
+                    return newNotes.reduce((acc, note, index) => {
+                        if (index > 0 && index % 4 === 0) {
+                            return `${acc} | ${note}`;
+                        }
+                        return `${acc} ${note}`;
+                    }, '').trim() + (newNotes.length % 4 === 0 ? ' |' : '');
+                });
+                
                 playSound(sortedKeys); // Play all notes in the chord
-
-                // Reset active keys after playing the chord
-                setActiveKeys([]);
+                setActiveKeys([]); // Reset active keys after playing the chord
             }, 200); // 200ms debounce delay
         }
     };
@@ -134,13 +175,11 @@ function App() {
                     <Route
                         path="/keyboard"
                         element={
-                            <>
-                                <div id="sheet-music"></div>
-                                <Keyboard
-                                    activeKeys={activeKeys}
-                                    keyMap={keyMap}
-                                />
-                            </>
+                            <KeyboardPage
+                                activeKeys={activeKeys}
+                                keyMap={keyMap}
+                                abcNotation={abcNotation}
+                            />
                         }
                     />
                 </Routes>

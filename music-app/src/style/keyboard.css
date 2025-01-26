@@ -1,4 +1,3 @@
-
 @font-face {
     font-family: 'Poppins-Medium.ttf';
     src: url('./fonts/Poppins-Medium.ttf');
@@ -53,4 +52,11 @@ body {
 
 .active.black-key {
     background-color: #040622
+}
+
+#sheet-music {
+    width: 100%;
+    max-width: 900px;
+    margin: 20px auto;
+    overflow-x: hidden;
 }

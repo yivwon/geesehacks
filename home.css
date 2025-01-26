@@ -20,7 +20,6 @@ body, html {
     padding: 0px;
     width: 100%;
     overflow: auto;
-    position: static;
     font-family: "Poppins-ExtraBold", sans-serif; /* Apply Poppins-ExtraBold globally */
 }
 

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Keyboard from "./components/keyboard";
 import ABCJS from "abcjs";
 import "./style/keyboard.css";
@@ -6,35 +6,66 @@ import "./style/keyboard.css";
 function App() {
     const [activeKeys, setActiveKeys] = useState([]);
     const [abcNotation, setAbcNotation] = useState("");
+    const debounceTimer = useRef(null); // Timer for debouncing
 
     const keyMap = {
-        a: "C1", // Middle C
-        w: "Csh1", // C#
-        s: "D1", // D
-        e: "Dsh1", // D#
-        d: "E1", // E
-        f: "F1", // F
-        t: "Fsh1", // F#
-        g: "G1", // G
-        y: "Gsh1", // G#
-        h: "A1", // A
-        u: "Ash1", // A#
-        j: "B1", // B
-        k: "C2", // High C
-        o: "Csh2", // High C#
-        l: "D2", // High D
-        p: "Dsh2", // High D#
-        ";": "E2", // High E
-        // Add more mappings for other notes...
+        a: "C", // Middle C
+        w: "^C", // C#
+        s: "D", // D
+        e: "^D", // D#
+        d: "E", // E
+        f: "F", // F
+        t: "^F", // F#
+        g: "G", // G
+        y: "^G", // G#
+        h: "A", // A
+        u: "^A", // A#
+        j: "B", // B
+        k: "c", // High C
+        o: "^c", // High C#
+        l: "d", // High D
+        p: "^d", // High D#
+        ";": "e", // High E
     };
 
-    const playSound = (note) => {
-        try {
-            const audio = new Audio(`/sounds/${note}.mp3`);
-            console.log(`Playing: ${note}.mp3`); // Debugging
-            audio.play();
-        } catch (error) {
-            console.error(`Failed to load sound for ${note}:`, error);
+    const fileNameMap = {
+        C: "C1",
+        "^C": "Csh1",
+        D: "D1",
+        "^D": "Dsh1",
+        E: "E1",
+        F: "F1",
+        "^F": "Fsh1",
+        G: "G1",
+        "^G": "Gsh1",
+        A: "A1",
+        "^A": "Ash1",
+        B: "B1",
+        c: "C2",
+        "^c": "Csh2",
+        d: "D2",
+        "^d": "Dsh2",
+        e: "E2",
+    };
+
+    const playSound = (notes) => {
+        if (notes.length === 1) {
+            // Play a single note
+            const note = notes[0];
+            const soundFile = fileNameMap[note];
+            if (soundFile) {
+                const audio = new Audio(`/sounds/${soundFile}.mp3`);
+                audio.play();
+            }
+        } else {
+            // Handle chords (optional: implement combined chord sounds)
+            notes.forEach((note) => {
+                const soundFile = fileNameMap[note];
+                if (soundFile) {
+                    const audio = new Audio(`/sounds/${soundFile}.mp3`);
+                    audio.play();
+                }
+            });
         }
     };
 
@@ -47,23 +78,38 @@ function App() {
         renderSheetMusic();
     }, [abcNotation]);
 
+    const handleKeyDown = (event) => {
+        const note = keyMap[event.key];
+        if (note && !activeKeys.includes(note)) {
+            setActiveKeys((prev) => [...prev, note]); // Add the note to active keys
+
+            // Clear the existing debounce timer
+            if (debounceTimer.current) {
+                clearTimeout(debounceTimer.current);
+            }
+
+            // Set a new debounce timer
+            debounceTimer.current = setTimeout(() => {
+                // Play sound and update ABC notation as a chord
+                const sortedKeys = [...activeKeys, note].sort();
+                const chord = `[${sortedKeys.join(" ")}]`; // Format as a chord
+                setAbcNotation((prev) => `${prev} ${chord}`); // Append to notation
+                playSound(sortedKeys); // Play all notes in the chord
+
+                // Reset active keys after playing the chord
+                setActiveKeys([]);
+            }, 200); // 200ms debounce delay
+        }
+    };
+
+    const handleKeyUp = (event) => {
+        const note = keyMap[event.key];
+        if (note) {
+            setActiveKeys((prev) => prev.filter((key) => key !== note)); // Remove the note
+        }
+    };
+
     useEffect(() => {
-        const handleKeyDown = (event) => {
-            const note = keyMap[event.key];
-            if (note && !activeKeys.includes(note)) {
-                setActiveKeys((prev) => [...prev, note]); // Add note to active keys
-                playSound(note);
-                setAbcNotation((prev) => `${prev} ${note}`);
-            }
-        };
-
-        const handleKeyUp = (event) => {
-            const note = keyMap[event.key];
-            if (note) {
-                setActiveKeys((prev) => prev.filter((key) => key !== note)); // Reset the active key
-            }
-        };
-
         window.addEventListener("keydown", handleKeyDown);
         window.addEventListener("keyup", handleKeyUp);
 
@@ -71,7 +117,7 @@ function App() {
             window.removeEventListener("keydown", handleKeyDown);
             window.removeEventListener("keyup", handleKeyUp);
         };
-    }, [activeKeys, keyMap]);
+    }, [activeKeys]);
 
     return (
         <div>

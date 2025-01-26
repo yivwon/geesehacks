@@ -1,22 +1,22 @@
 const Keyboard = ({ activeKeys }) => {
     const pianoKeys = [
-        { note: "C1", type: "white" },
-        { note: "Csh1", type: "black" },
-        { note: "D1", type: "white" },
-        { note: "Dsh1", type: "black" },
-        { note: "E1", type: "white" },
-        { note: "F1", type: "white" },
-        { note: "Fsh1", type: "black" },
-        { note: "G1", type: "white" },
-        { note: "Gsh1", type: "black" },
-        { note: "A1", type: "white" },
-        { note: "Ash1", type: "black" },
-        { note: "B1", type: "white" },
-        { note: "C2", type: "white" },
-        { note: "Csh2", type: "black" },
-        { note: "D2", type: "white" },
-        { note: "Dsh2", type: "black" },
-        { note: "E2", type: "white" },
+        { note: "C", type: "white" },
+        { note: "^C", type: "black" }, // C#
+        { note: "D", type: "white" },
+        { note: "^D", type: "black" }, // D#
+        { note: "E", type: "white" },
+        { note: "F", type: "white" },
+        { note: "^F", type: "black" }, // F#
+        { note: "G", type: "white" },
+        { note: "^G", type: "black" }, // G#
+        { note: "A", type: "white" },
+        { note: "^A", type: "black" }, // A#
+        { note: "B", type: "white" },
+        { note: "c", type: "white" }, // High C
+        { note: "^c", type: "black" }, // High C#
+        { note: "d", type: "white" }, // High D
+        { note: "^d", type: "black" }, // High D#
+        { note: "e", type: "white" }, // High E
     ];
 
     return (
